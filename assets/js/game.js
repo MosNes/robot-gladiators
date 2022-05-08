@@ -83,6 +83,16 @@ var startGame = function () {
     endGame();
 };
 
+var playAgain = function(){
+    var playAgainConfirm = window.confirm("Would you like to play again?");
+    if (playAgainConfirm){
+        startGame();
+    }
+    else {
+        window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+    }
+};
+
 var endGame = function () {
     if (playerHealth > 0) { 
         window.alert("The game has now ended. Let's see how you did!");
@@ -90,17 +100,7 @@ var endGame = function () {
     else {
         window.alert("You've lost your robot in battle.");
     }
+    playAgain();
 };
-
-// var confirm = function() {
-//     var playAgainConfirm = window.confirm("Would you like to play again?");
-//     if (playAgainConfirm) {
-//         //restart the game
-//         startGame();
-//     }
-//     else {
-//         window.alert("Thank you for playing Robot Gladiators! Come back soon!");
-//     }
-// };
 
 startGame();
