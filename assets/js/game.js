@@ -79,29 +79,41 @@ var randomNumber = function(min, max) {
     return value;
 };
 
+var fightOrSkip = function () {
+    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+    promptFight = promptFight.toLowerCase();
+    if (promptFight === ""||promptFight === null) {
+        window.alert("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
+    }
+
+    if (promptFight === "skip") {
+
+        var confirmSkip = window.confirm("Are you sure you want to skip the fight?");
+
+        if (confirmSkip) {
+            window.alert(playerInfo.name+" has decided to skip this fight. Goodbye!");
+            playerInfo.playerMoney = playerInfo.money -10;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+}
+
 var fight = function (enemy) {
     while (enemy.health > 0 && playerInfo.health > 0) {
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-        console.log("Player chose: " + promptFight);
-
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            window.alert(playerInfo.name + " has chosen to skip the fight!");
-            //confirm player wants to skip
-            var confirmSkip = window.confirm("Are you sure you'd like to skip?")
-            if (confirmSkip) {
-                window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-                // subtract money from playerInfo.money for skipping
-                playerInfo.money = Math.max(0,playerInfo.money - 10);
-                console.log("playerInfo.money", playerInfo.money);
-                break;
-            }
+        //trigger fight or skip prompt
+        if (fightOrSkip()){
+            //if true, leave fight by breaking the loop
+            break;
         }
-
         //generate random damage value based on player's attack power
-        var damage = randomNumber(playerInfo.attack-3,playerInfo.attack);
-        enemy.health = Math.max(0,enemy.health - damage);
+        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+        enemy.health = Math.max(0, enemy.health - damage);
         // Log a resulting message to the console so we know that it worked.
-        console.log(playerInfo.name + " attacked " + enemy.name + " for "+damage+" damage. " + enemy.name + " now has " + enemy.health + " health remainng.");
+        console.log(playerInfo.name + " attacked " + enemy.name + " for " + damage + " damage. " + enemy.name + " now has " + enemy.health + " health remainng.");
         if (enemy.health <= 0) {
             window.alert(enemy.name + " has died!");
             break;
@@ -111,10 +123,10 @@ var fight = function (enemy) {
         }
         // Subtract the value of `damage` from the value of `playerInfo.health` and use that result to update the value in the `playerInfo.health` variable.
         var damage = randomNumber(enemy.attack - 3, enemy.attack);
-        playerInfo.health = Math.max(0,playerInfo.health - damage);
+        playerInfo.health = Math.max(0, playerInfo.health - damage);
         // Log a resulting message to the console so we know that it worked.
         console.log(
-            enemy.name + " attacked " + playerInfo.name + " for "+ damage+ " damage. " + playerInfo.name + " now has " + playerInfo.health + " health remaining."
+            enemy.name + " attacked " + playerInfo.name + " for " + damage + " damage. " + playerInfo.name + " now has " + playerInfo.health + " health remaining."
         );
         if (playerInfo.health <= 0) {
             window.alert(playerInfo.name + " has died!");
@@ -135,7 +147,6 @@ var startGame = function () {
     for (var i = 0; i < enemyInfo.length; i++) {
         if (playerInfo.health > 0) {
             window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
-            debugger;
             var pickedEnemyObj = enemyInfo[i];
             pickedEnemyObj.health = randomNumber(40,60);
             fight(pickedEnemyObj);
