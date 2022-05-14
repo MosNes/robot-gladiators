@@ -93,7 +93,7 @@ var fightOrSkip = function () {
 
         if (confirmSkip) {
             window.alert(playerInfo.name+" has decided to skip this fight. Goodbye!");
-            playerInfo.playerMoney = playerInfo.money -10;
+            playerInfo.money = playerInfo.money-10;
             return true;
         }
         else{
@@ -192,6 +192,18 @@ var endGame = function () {
     }
     else {
         window.alert("You've lost your robot in battle.");
+    }
+    var currentHighScore = localStorage.getItem("robotGladiatorsHighScore");
+    if (currentHighScore === null){
+        currentHighScore = 0;
+    }
+    if (playerInfo.money > currentHighScore){
+        window.alert("Congratulations, you have a new High Score! Your score is: "+playerInfo.money);
+        localStorage.setItem("robotGladiatorsHighScore",playerInfo.money.toString());
+        localStorage.setItem("robotGladiatorsHighScoreName",playerInfo.name);
+    }
+    else {
+        window.alert("Your score is: "+playerInfo.money+", The current High Score is: "+currentHighScore+" held by "+localStorage.getItem("robotGladiatorsHighScoreName"));
     }
     playAgain();
 };
